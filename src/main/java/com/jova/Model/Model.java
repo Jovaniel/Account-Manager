@@ -44,10 +44,8 @@ public class Model {
                 archivoSalida.close();
             }
             crearTablaUsuarios(rutaBaseDatos);
-        } catch (IOException e) {
-            System.err.println("Error al cargar el archivo de configuración: " + e.getMessage());
-        } catch (SQLException e) {
-            System.err.println("Error al crear la tabla de usuarios: " + e.getMessage());
+        } catch (IOException | SQLException e) {
+            e.printStackTrace();
         }
     }
 
