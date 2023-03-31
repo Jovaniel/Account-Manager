@@ -1,6 +1,7 @@
-package org.jova.Model;
+package com.jova.Model;
 
-import org.jova.AES256;
+import com.jova.AES256;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.io.File;
@@ -77,7 +78,7 @@ public class Model {
             statement.close();
             conexion.close();
         }catch (SQLException e){
-            System.out.println("Error at crearTablaUsuarios" + e);
+            e.printStackTrace();
         }
     }
 
@@ -90,10 +91,8 @@ public class Model {
             archivoEntrada.close();
             rutaBaseDatos = propiedades.getProperty("rutaBaseDatos");
             con = DriverManager.getConnection("jdbc:sqlite:" + rutaBaseDatos);
-        } catch (IOException e) {
-            System.err.println("Error al cargar el archivo de configuración: " + e.getMessage());
-        } catch (SQLException e) {
-            System.err.println("Error al conectar con la base de datos: " + e.getMessage());
+        } catch (IOException | SQLException e) {
+            e.printStackTrace();
         }
         return con;
     }
@@ -110,7 +109,6 @@ public class Model {
             preparedStatement.setString(3, password);
             preparedStatement.execute();
             connection.commit();
-            System.out.println("Transaction Commited");
 
             String idSQL = "select id from accounts where title = ? and email = ? and password = ?";
             preparedStatement = connection.prepareStatement(idSQL);
@@ -127,7 +125,6 @@ public class Model {
             if(connection != null){
                 try{
                     connection.rollback();
-                    System.out.println("Transaction is being rolled back");
                 }catch (Exception ex){
                     ex.printStackTrace();
                 }
@@ -231,7 +228,6 @@ public class Model {
         }catch (SQLException e){
             e.printStackTrace();
             connection.rollback();
-            System.out.println("Transaction Rolled Back");
         }finally {
             cerrarConexion(obtenerConexion());
         }
@@ -251,7 +247,6 @@ public class Model {
         }catch (SQLException e){
             e.printStackTrace();
             connection.rollback();
-            System.out.println("Transaction Rolled Back");
         }finally {
             cerrarConexion(obtenerConexion());
         }
@@ -359,14 +354,14 @@ public class Model {
             String rutaBaseDatos = propiedades.getProperty("rutaBaseDatos");
             return rutaBaseDatos != null && !rutaBaseDatos.isEmpty();
         } catch (IOException e) {
-            System.err.println("Error al cargar el archivo de configuración: " + e.getMessage());
+            e.printStackTrace();
             return false;
         } finally {
             if (archivoEntrada != null) {
                 try {
                     archivoEntrada.close();
                 } catch (IOException e) {
-                    System.err.println("Error al cerrar el archivo de configuración: " + e.getMessage());
+                    e.printStackTrace();
                 }
             }
         }
@@ -410,10 +405,10 @@ public class Model {
             resultSet = statement.executeQuery("SELECT COUNT(*) FROM accounts");
 
             if (resultSet.next() && resultSet.getInt(1) == 0) {
-                System.out.println("The database is empty.");
+                //System.out.println("The database is empty.");
                 return true;
             } else {
-                System.out.println("The database is not empty.");
+                //System.out.println("The database is not empty.");
                 return false;
             }
 

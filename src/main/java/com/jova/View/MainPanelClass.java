@@ -1,4 +1,4 @@
-package org.jova.View;
+package com.jova.View;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
@@ -60,6 +60,42 @@ public class MainPanelClass extends JFrame{
     private JLabel loginLabel;
     private JButton loginNextButton;
     private JLabel addNewAccountManagerLabel;
+    private JPanel passwordGeneratorPanel;
+    private JLabel passwordGeneratorLabel;
+    private JLabel selectTypeOfPassLabel;
+    private JButton passphraseButton;
+    private JButton randomPasswordButton;
+    private JPanel passphrasePanel;
+    private JPanel randomPasswordPanel;
+    private JLabel passphraseLabel;
+    private JLabel passphraseWordsLabel;
+    private JLabel passphraseSeparatorLabel;
+    private JTextField passphraseNumberOfWordsTxtField;
+    private JTextField passphraseWordSeparatorTxtField;
+    private JLabel passphraseCasesLabel;
+    private JLabel randomPasswordLabel;
+    private JLabel randomPasswordLengthLabel;
+    private JTextField randomPasswordLengthTxtField;
+    private JLabel randomPasswordIncludeUppderCaseLabel;
+    private JCheckBox includeUppercaseCheckbox;
+    private JLabel includeLowercaseLettersLabel;
+    private JCheckBox includeLowercaseCheckbox;
+    private JLabel includeSymbolsLabel;
+    private JCheckBox includeSymbolsCheckbox;
+    private JLabel includeNumbersLabel;
+    private JCheckBox includeNumbersCheckbox;
+    private JButton passphraseCancelButton;
+    private JButton passphraseApplyButton;
+    private JButton randomPassCancelButton;
+    private JButton randomPassApplyButton;
+    private JTextField passphraseShowGeneratedPassTxtField;
+    private JTextField randomPassShowGeneratedPassTxtField;
+    private JPanel passphraseGroupOfRadioButtons;
+    private JRadioButton passphraseUpperRadioButton;
+    private JRadioButton passphraseLowerRadioButton;
+    private JRadioButton passphraseTitleRadioButton;
+    private JButton passphraseGenerateButton;
+    private JButton randomPassGenerateButton;
     private JButton cdbAddExistingButton;
     private JLabel AccountsTableDatabaseNameLabel;
 
@@ -179,6 +215,102 @@ public class MainPanelClass extends JFrame{
         return editAccountShowPassTxtField;
     }
 
+    public JButton getNewAccountCancelButton() {
+        return newAccountCancelButton;
+    }
+
+    public JButton getNewAccountGenerateButton() {
+        return newAccountGenerateButton;
+    }
+
+    public JButton getEditAccountGenerateButton() {
+        return editAccountGenerateButton;
+    }
+
+    public JPanel getPasswordGeneratorPanel() {
+        return passwordGeneratorPanel;
+    }
+
+    public JButton getPassphraseButton() {
+        return passphraseButton;
+    }
+
+    public JButton getRandomPasswordButton() {
+        return randomPasswordButton;
+    }
+
+    public JPanel getPassphrasePanel() {
+        return passphrasePanel;
+    }
+
+    public JPanel getRandomPasswordPanel() {
+        return randomPasswordPanel;
+    }
+
+    public JTextField getPassphraseNumberOfWordsTxtField() {
+        return passphraseNumberOfWordsTxtField;
+    }
+
+    public JTextField getPassphraseWordSeparatorTxtField() {
+        return passphraseWordSeparatorTxtField;
+    }
+
+    public JTextField getRandomPasswordLengthTxtField() {
+        return randomPasswordLengthTxtField;
+    }
+
+    public JCheckBox getIncludeUppercaseCheckbox() {
+        return includeUppercaseCheckbox;
+    }
+
+    public JCheckBox getIncludeLowercaseCheckbox() {
+        return includeLowercaseCheckbox;
+    }
+
+    public JCheckBox getIncludeSymbolsCheckbox() {
+        return includeSymbolsCheckbox;
+    }
+
+    public JCheckBox getIncludeNumbersCheckbox() {
+        return includeNumbersCheckbox;
+    }
+
+    public JButton getPassphraseCancelButton() {
+        return passphraseCancelButton;
+    }
+
+    public JButton getPassphraseApplyButton() {
+        return passphraseApplyButton;
+    }
+
+    public JButton getRandomPassCancelButton() {
+        return randomPassCancelButton;
+    }
+
+    public JButton getRandomPassApplyButton() {
+        return randomPassApplyButton;
+    }
+
+    public JRadioButton getPassphraseUpperRadioButton() {
+        return passphraseUpperRadioButton;
+    }
+
+    public JRadioButton getPassphraseLowerRadioButton() {
+        return passphraseLowerRadioButton;
+    }
+
+    public JRadioButton getPassphraseTitleRadioButton() {
+        return passphraseTitleRadioButton;
+    }
+
+    public JTextField getPassphraseShowGeneratedPassTxtField() {
+        return passphraseShowGeneratedPassTxtField;
+    }
+
+    public JTextField getRandomPassShowGeneratedPassTxtField() {
+        return randomPassShowGeneratedPassTxtField;
+    }
+
     /*-----------------------------------First Layer----------------------------------------------*/
     public JButton getInsertDbNextButton() {
         return insertDbNextButton;
@@ -273,4 +405,75 @@ public class MainPanelClass extends JFrame{
     public JLabel getLoginLabel() {
         return loginLabel;
     }
+
+    /*---------------------------------Generate Password Panels--------------------------------------------------*/
+
+    public void newAccountGenerateButtonListener(ActionListener listener){
+        newAccountGenerateButton.addActionListener(listener);
+    }
+
+    public void editAccountGenerateButtonListener(ActionListener listener){
+        editAccountGenerateButton.addActionListener(listener);
+    }
+
+    public void passphraseApplyButtonListener(ActionListener listener){
+        passphraseApplyButton.addActionListener(listener);
+    }
+
+    public void passphraseCancelButton(ActionListener listener){
+        passphraseCancelButton.addActionListener(listener);
+    }
+
+    public void randomPassApplyButtonListener(ActionListener listener){
+        randomPassApplyButton.addActionListener(listener);
+    }
+
+    public void randomPassCancelButton(ActionListener listener){
+        randomPassCancelButton.addActionListener(listener);
+    }
+
+    public void includeUppercaseCheckboxListener(ItemListener listener){
+        includeUppercaseCheckbox.addItemListener(listener);
+    }
+
+    public void includeLowercaseCheckboxListener(ItemListener listener){
+        includeLowercaseCheckbox.addItemListener(listener);
+    }
+
+    public void includeSymbolsCheckboxListener(ItemListener listener){
+        includeSymbolsCheckbox.addItemListener(listener);
+    }
+
+    public void includeNumbersCheckboxListener(ItemListener listener){
+        includeNumbersCheckbox.addItemListener(listener);
+    }
+
+    public void passphraseButtonListener(ActionListener listener){
+        passphraseButton.addActionListener(listener);
+    }
+
+    public void randomPasswordButtonListener(ActionListener listener){
+        randomPasswordButton.addActionListener(listener);
+    }
+
+    public void passphraseUpperRadioButtonListener(ActionListener listener){
+        passphraseUpperRadioButton.addActionListener(listener);
+    }
+
+    public void passphraseLowerRadioButtonListener(ActionListener listener){
+        passphraseLowerRadioButton.addActionListener(listener);
+    }
+
+    public void passphraseTitleRadioButtonListener(ActionListener listener){
+        passphraseTitleRadioButton.addActionListener(listener);
+    }
+
+    public void passphraseGenerateButtonListener(ActionListener listener){
+        passphraseGenerateButton.addActionListener(listener);
+    }
+
+    public void randomPassGenerateButtonListener(ActionListener listener){
+        randomPassGenerateButton.addActionListener(listener);
+    }
+
 }

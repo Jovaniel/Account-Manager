@@ -1,4 +1,4 @@
-package org.jova;
+package com.jova;
 import com.github.mervick.aes_everywhere.Aes256;
 
 /*Extracted from github -> https://github.com/mervick/aes-everywhere */
