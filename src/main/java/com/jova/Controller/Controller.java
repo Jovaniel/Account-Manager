@@ -392,31 +392,49 @@ public class Controller {
             @Override
             public void actionPerformed(ActionEvent e) {
                   String passphrase = mainPanelClass.getPassphraseShowGeneratedPassTxtField().getText();
+                  if(!passphrase.isEmpty()) {
+                      if (wasEditAccountVisible) {
+                          mainPanelClass.getEditAccountPassTxtField().setText(passphrase);
+                          mainPanelClass.getEditAccountShowPassTxtField().setText(passphrase);
+                          mainPanelClass.getEditAccountCheckBox().setSelected(true);
+                          mainPanelClass.getAddNewAccountPanel().setVisible(false);
+                          mainPanelClass.getEditAccountPanel().setVisible(true);
+                      } else {
+                          mainPanelClass.getAddNewAccountPassField().setText(passphrase);
+                          mainPanelClass.getNewAccountShowPassTxtField().setText(passphrase);
+                          mainPanelClass.getNewAccountCheckBox().setSelected(true);
+                          mainPanelClass.getEditAccountPanel().setVisible(false);
+                          mainPanelClass.getAddNewAccountPanel().setVisible(true);
+                      }
+                      mainPanelClass.getPassphrasePanel().setVisible(false);
+                  }else{
+                      JOptionPane.showMessageDialog(mainPanelClass.getMainPanel(), "Please, generate a password before applying.");
+                  }
+            }
+        });
+
+        mainPanelClass.randomPassApplyButtonListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String randomPass = mainPanelClass.getRandomPassShowGeneratedPassTxtField().getText();
+                if(!randomPass.isEmpty()) {
                     if (wasEditAccountVisible) {
-                        if(!mainPanelClass.getPassphraseShowGeneratedPassTxtField().getText().isEmpty()){
-                            mainPanelClass.getEditAccountPassTxtField().setText(passphrase);
-                            mainPanelClass.getEditAccountShowPassTxtField().setText(passphrase);
-                            mainPanelClass.getEditAccountCheckBox().setSelected(true);
-                            mainPanelClass.getAddNewAccountPanel().setVisible(false);
-                            mainPanelClass.getPassphrasePanel().setVisible(false);
-                            mainPanelClass.getPasswordGeneratorPanel().setVisible(false);
-                            mainPanelClass.getEditAccountPanel().setVisible(true);
-                        }else {
-                            JOptionPane.showMessageDialog(mainPanelClass.getMainPanel(), "Please, generate a password before applying.");
-                        }
+                        mainPanelClass.getEditAccountPassTxtField().setText(randomPass);
+                        mainPanelClass.getEditAccountShowPassTxtField().setText(randomPass);
+                        mainPanelClass.getEditAccountCheckBox().setSelected(true);
+                        mainPanelClass.getAddNewAccountPanel().setVisible(false);
+                        mainPanelClass.getEditAccountPanel().setVisible(true);
                     } else {
-                        if(!mainPanelClass.getPassphraseShowGeneratedPassTxtField().getText().isEmpty()) {
-                            mainPanelClass.getAddNewAccountPassField().setText(passphrase);
-                            mainPanelClass.getNewAccountShowPassTxtField().setText(passphrase);
-                            mainPanelClass.getNewAccountCheckBox().setSelected(true);
-                            mainPanelClass.getEditAccountPanel().setVisible(false);
-                            mainPanelClass.getPassphrasePanel().setVisible(false);
-                            mainPanelClass.getPasswordGeneratorPanel().setVisible(false);
-                            mainPanelClass.getAddNewAccountPanel().setVisible(true);
-                        }else{
-                            JOptionPane.showMessageDialog(mainPanelClass.getMainPanel(), "Please, generate a password before applying.");
-                        }
+                        mainPanelClass.getAddNewAccountPassField().setText(randomPass);
+                        mainPanelClass.getNewAccountShowPassTxtField().setText(randomPass);
+                        mainPanelClass.getNewAccountCheckBox().setSelected(true);
+                        mainPanelClass.getEditAccountPanel().setVisible(false);
+                        mainPanelClass.getAddNewAccountPanel().setVisible(true);
                     }
+                    mainPanelClass.getRandomPasswordPanel().setVisible(false);
+                }else{
+                    JOptionPane.showMessageDialog(mainPanelClass.getMainPanel(), "Please, generate a password before applying.");
+                }
             }
         });
 
@@ -428,38 +446,7 @@ public class Controller {
                 }else{
                     mainPanelClass.getAddNewAccountPanel().setVisible(true);
                 }
-                mainPanelClass.getPasswordGeneratorPanel().setVisible(false);
-                mainPanelClass.getRandomPasswordPanel().setVisible(false);
-            }
-        });
-
-        mainPanelClass.randomPassApplyButtonListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String randomPass = mainPanelClass.getRandomPassShowGeneratedPassTxtField().getText();
-                    if(wasEditAccountVisible) {
-                        if(!mainPanelClass.getRandomPassShowGeneratedPassTxtField().getText().isEmpty()) {
-                            mainPanelClass.getEditAccountPassTxtField().setText(randomPass);
-                            mainPanelClass.getEditAccountShowPassTxtField().setText(randomPass);
-                            mainPanelClass.getEditAccountCheckBox().setSelected(true);
-                            mainPanelClass.getAddNewAccountPanel().setVisible(false);
-                            mainPanelClass.getRandomPasswordPanel().setVisible(false);
-                            mainPanelClass.getEditAccountPanel().setVisible(true);
-                        }else{
-                            JOptionPane.showMessageDialog(mainPanelClass.getMainPanel(), "Please, generate a password before applying.");
-                        }
-                    }else{
-                        if(!mainPanelClass.getRandomPassShowGeneratedPassTxtField().getText().isEmpty()) {
-                            mainPanelClass.getAddNewAccountPassField().setText(randomPass);
-                            mainPanelClass.getNewAccountShowPassTxtField().setText(randomPass);
-                            mainPanelClass.getNewAccountCheckBox().setSelected(true);
-                            mainPanelClass.getEditAccountPanel().setVisible(false);
-                            mainPanelClass.getRandomPasswordPanel().setVisible(false);
-                            mainPanelClass.getAddNewAccountPanel().setVisible(true);
-                        }else{
-                            JOptionPane.showMessageDialog(mainPanelClass.getMainPanel(), "Please, generate a password before applying.");
-                        }
-                    }
+                mainPanelClass.getPassphrasePanel().setVisible(false);
             }
         });
 
@@ -467,14 +454,11 @@ public class Controller {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(wasEditAccountVisible){
-                    mainPanelClass.getPasswordGeneratorPanel().setVisible(false);
-                    mainPanelClass.getRandomPasswordPanel().setVisible(false);
                     mainPanelClass.getEditAccountPanel().setVisible(true);
                 }else{
-                    mainPanelClass.getPasswordGeneratorPanel().setVisible(false);
-                    mainPanelClass.getRandomPasswordPanel().setVisible(false);
                     mainPanelClass.getAddNewAccountPanel().setVisible(true);
                 }
+                mainPanelClass.getRandomPasswordPanel().setVisible(false);
             }
         });
 
