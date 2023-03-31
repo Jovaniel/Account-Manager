@@ -23,7 +23,7 @@ public class Controller {
     int selectedRowId;
     PassphraseGenerator.Cases cases;
     private boolean passphraseUpperCase, passphraseLowerCase, passphraseTitleCase, includeUpperCase, includeLowerCase, includeSymbols, includeNumbers, wasEditAccountVisible;
-    Wordlist w = Wordlist.instantiate(new File("src/main/java/com/jova/eff_long_wordlist.txt"));
+    Wordlist w = Wordlist.instantiate(new File("src/main/resources/eff_long_wordlist.txt"));
 
     public Controller(MainPanelClass mainPanelClass, Model model) throws SQLException, NoSuchAlgorithmException {
         this.mainPanelClass = mainPanelClass;
