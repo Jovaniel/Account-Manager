@@ -61,7 +61,6 @@ public class Model {
             }
         }else if(seleccion == JFileChooser.CANCEL_OPTION){
             optionCanceled = true;
-            System.out.println("Option Canceled");
         }
         return rutaBaseDatos;
     }

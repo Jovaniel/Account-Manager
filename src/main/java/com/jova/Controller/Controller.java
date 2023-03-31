@@ -145,7 +145,6 @@ public class Controller {
                                 selectedRow = mainPanelClass.getAccountsTable().getSelectedRow();
                                 Object idObj = tableModel.getValueAt(selectedRow, 0);
                                 selectedRowId = Integer.parseInt(idObj.toString());
-                                System.out.println(selectedRowId);
                                 tableModel.removeRow(selectedRow);
                                 model.deleteDataOfDB(selectedRowId);
                             }
@@ -219,7 +218,6 @@ public class Controller {
                 String password = new String(getPassword);
                 char[] getConfirmPassword = mainPanelClass.getInsertDbConfirmPassword().getPassword();
                 String confirmPassword = new String(getConfirmPassword);
-                System.out.println();
                     if(password.equals(confirmPassword) && !password.isEmpty()){
                         mainPanelClass.getInsertDbPasswordPanel().setVisible(false);
                         mainPanelClass.getAccountsTablePanel().setVisible(true);
@@ -249,7 +247,6 @@ public class Controller {
                 char[] password = mainPanelClass.getLoginPasswordField().getPassword();
                 String passwordStr = new String(password);
                 String hashPass = model.generateHash(passwordStr);
-                System.out.println(hashPass);
                 try {
                     if(hashPass.equals(model.getKeyHashFromDB())) {
                         model.getMasterKey(passwordStr);
