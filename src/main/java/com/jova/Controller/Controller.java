@@ -25,7 +25,7 @@ public class Controller {
     private boolean passphraseUpperCase, passphraseLowerCase, passphraseTitleCase, includeUpperCase, includeLowerCase, includeSymbols, includeNumbers, wasEditAccountVisible;
     Wordlist w = Wordlist.instantiate(new File("src/main/resources/eff_long_wordlist.txt"));
 
-    public Controller(MainPanelClass mainPanelClass, Model model) throws SQLException, NoSuchAlgorithmException {
+    public Controller(MainPanelClass mainPanelClass, Model model){
         this.mainPanelClass = mainPanelClass;
         this.model = model;
 

@@ -1,7 +1,5 @@
 package com.jova.Model;
-
 import com.jova.AES256;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.io.File;
@@ -25,7 +23,6 @@ public class Model {
     private String key;
 
     public void crearBaseDatos() {
-        //Si cancela la seleccion de archivo, mandar para el panel principal nuevamente
         Properties propiedades = new Properties();
         String rutaArchivoConfig = "config.properties";
         try {
@@ -405,7 +402,7 @@ public class Model {
                 //System.out.println("The database is empty.");
                 return true;
             } else {
-                //System.out.println("The database is not empty.");
+                // .println("The database is not empty.");
                 return false;
             }
 

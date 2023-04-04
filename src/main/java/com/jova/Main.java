@@ -2,7 +2,6 @@ package com.jova;
 import com.jova.Controller.Controller;
 import com.jova.Model.Model;
 import com.jova.View.MainPanelClass;
-
 import javax.swing.*;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
