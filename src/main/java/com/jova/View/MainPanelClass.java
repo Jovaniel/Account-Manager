@@ -3,16 +3,8 @@ package com.jova.View;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
-import java.awt.event.MouseAdapter;
 
 public class MainPanelClass extends JFrame{
-
-    public MainPanelClass(){
-
-        accountsTablePanel.addMouseListener(new MouseAdapter() {
-        });
-    }
-
     private JPanel mainPanel;
     private JPanel createDatabasePanel;
     private JPanel accountsTablePanel;
@@ -115,28 +107,8 @@ public class MainPanelClass extends JFrame{
         return editAccountPanel;
     }
 
-    public JLabel getCdbAccountManagerLabel() {
-        return cdbAccountManagerLabel;
-    }
-
     public JTable getAccountsTable() {
         return accountsTable;
-    }
-
-    public JLabel getAccountsTableDatabaseNameLabel(){
-        return accountsTableDatabaseNameLabel;
-    }
-
-    public JButton getAddNewAccountButton() {
-        return addNewAccountButton;
-    }
-
-    public JLabel getAccountsTableLabel() {
-        return accountsTableLabel;
-    }
-
-    public JScrollPane getAccountsTableScrollPanel() {
-        return accountsTableScrollPanel;
     }
 
     public JTextField getAddNewAccountTitleTxtField() {
@@ -149,38 +121,6 @@ public class MainPanelClass extends JFrame{
 
     public JPasswordField getAddNewAccountPassField() {
         return addNewAccountPassField;
-    }
-
-    public JLabel getAddNewAccountTitleLabel() {
-        return addNewAccountTitleLabel;
-    }
-
-    public JLabel getAddNewAccountEmailLabel() {
-        return addNewAccountEmailLabel;
-    }
-
-    public JLabel getAddNewAccountPassLabel() {
-        return addNewAccountPassLabel;
-    }
-
-    public JButton getNewAccountApplyButton() {
-        return newAccountApplyButton;
-    }
-
-    public JButton getNewAccounCancelButton() {
-        return newAccountCancelButton;
-    }
-
-    public JLabel getEditAccountTitleLabel() {
-        return editAccountTitleLabel;
-    }
-
-    public JLabel getEditAccountEmailLabel() {
-        return editAccountEmailLabel;
-    }
-
-    public JLabel getEditAccountPassLabel() {
-        return editAccountPassLabel;
     }
 
     public JTextField getEditAccountTitleTxtField() {
@@ -215,29 +155,11 @@ public class MainPanelClass extends JFrame{
         return editAccountShowPassTxtField;
     }
 
-    public JButton getNewAccountCancelButton() {
-        return newAccountCancelButton;
-    }
-
-    public JButton getNewAccountGenerateButton() {
-        return newAccountGenerateButton;
-    }
-
-    public JButton getEditAccountGenerateButton() {
-        return editAccountGenerateButton;
-    }
 
     public JPanel getPasswordGeneratorPanel() {
         return passwordGeneratorPanel;
     }
 
-    public JButton getPassphraseButton() {
-        return passphraseButton;
-    }
-
-    public JButton getRandomPasswordButton() {
-        return randomPasswordButton;
-    }
 
     public JPanel getPassphrasePanel() {
         return passphrasePanel;
@@ -273,22 +195,6 @@ public class MainPanelClass extends JFrame{
 
     public JCheckBox getIncludeNumbersCheckbox() {
         return includeNumbersCheckbox;
-    }
-
-    public JButton getPassphraseCancelButton() {
-        return passphraseCancelButton;
-    }
-
-    public JButton getPassphraseApplyButton() {
-        return passphraseApplyButton;
-    }
-
-    public JButton getRandomPassCancelButton() {
-        return randomPassCancelButton;
-    }
-
-    public JButton getRandomPassApplyButton() {
-        return randomPassApplyButton;
     }
 
     public JRadioButton getPassphraseUpperRadioButton() {
@@ -332,19 +238,12 @@ public class MainPanelClass extends JFrame{
         return insertDbPasswordPanel;
     }
 
-    public JButton getCdbCreateButton() {
-        return cdbCreateButton;
-    }
-
     /*-------------------------------Create New Database Panel Listeners---------------------------*/
     public void cdbCreateButtonListener (ActionListener listener){
         cdbCreateButton.addActionListener(listener);
     }
     public void insertDbPasswordNextButtonListener(ActionListener listener){
         getInsertDbNextButton().addActionListener(listener);
-    }
-    public void insertDbPasswordCancelButtonListener(ActionListener listener){
-        getInsertDbCancelButton().addActionListener(listener);
     }
 
     /*-------------------------------Accounts Table Panel Listeners--------------------------------*/

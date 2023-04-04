@@ -23,7 +23,7 @@ public class Controller {
     int selectedRowId;
     PassphraseGenerator.Cases cases;
     private boolean passphraseUpperCase, passphraseLowerCase, passphraseTitleCase, includeUpperCase, includeLowerCase, includeSymbols, includeNumbers, wasEditAccountVisible;
-    Wordlist w = Wordlist.instantiate(new File("src/main/resources/eff_long_wordlist.txt"));
+    Wordlist w = Wordlist.instantiate(new File(String.format("eff_long_wordlist.txt", File.separator)));
 
     public Controller(MainPanelClass mainPanelClass, Model model){
         this.mainPanelClass = mainPanelClass;
@@ -233,7 +233,7 @@ public class Controller {
                         }
                     }else{
                         if(password.isEmpty()){
-                            JOptionPane.showMessageDialog(mainPanelClass.getMainPanel(), "Please, insert a password.");
+                            JOptionPane.showMessageDialog(mainPanelClass.getMainPanel(), "Please, insert the password.");
                         }else {
                             JOptionPane.showMessageDialog(mainPanelClass.getMainPanel(), "Both passwords are not the same. Try again.");
                         }
