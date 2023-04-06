@@ -25,7 +25,7 @@ public class Controller {
     private boolean passphraseUpperCase, passphraseLowerCase, passphraseTitleCase, includeUpperCase, includeLowerCase, includeSymbols, includeNumbers, wasEditAccountVisible;
 
     //The line of code below belongs to the AccountManager.jar file. If you are going to create a .jar executable, please use this line of code.
-    /* Wordlist w = Wordlist.instantiate(new File(String.format("eff_long_wordlist.txt", File.separator))); */
+//     Wordlist w = Wordlist.instantiate(new File(String.format("eff_long_wordlist.txt", File.separator)));
 
     //The line of code below belongs to the AccountManager file. Use it if you are going to make some changes in the script, that way the program won't throw any errors.
     Wordlist w = Wordlist.instantiate(new File("src/main/resources/eff_long_wordlist.txt"));

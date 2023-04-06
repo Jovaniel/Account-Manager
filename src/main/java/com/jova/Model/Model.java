@@ -21,7 +21,7 @@ public class Model {
     private String rutaBaseDatos;
     private String key;
     private byte[] salt;
-    private String saltInString;
+
 
     public void crearBaseDatos() {
         Properties propiedades = new Properties();
@@ -485,7 +485,6 @@ public class Model {
         for (byte b : salt) {
             hexString.append(String.format("%02x", b));
         }
-        saltInString = hexString.toString();
         return hexString.toString();
     }
 
