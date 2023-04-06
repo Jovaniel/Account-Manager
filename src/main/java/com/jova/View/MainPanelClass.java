@@ -3,6 +3,8 @@ package com.jova.View;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 public class MainPanelClass extends JFrame{
     private JPanel mainPanel;

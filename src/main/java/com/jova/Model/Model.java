@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.sql.*;
 import java.util.Properties;
@@ -21,6 +20,8 @@ public class Model {
     private File archivoConfig;
     private String rutaBaseDatos;
     private String key;
+    private byte[] salt;
+    private String saltInString;
 
     public void crearBaseDatos() {
         Properties propiedades = new Properties();
@@ -32,12 +33,12 @@ public class Model {
                 propiedades.load(archivoEntrada);
                 archivoEntrada.close();
             }
-            rutaBaseDatos = propiedades.getProperty("rutaBaseDatos");
+            rutaBaseDatos = propiedades.getProperty("databasePath");
             if (rutaBaseDatos == null || rutaBaseDatos.isEmpty()) {
                 rutaBaseDatos = seleccionarArchivoBaseDatos();
-                propiedades.setProperty("rutaBaseDatos", rutaBaseDatos);
+                propiedades.setProperty("databasePath", rutaBaseDatos);
                 FileOutputStream archivoSalida = new FileOutputStream(rutaArchivoConfig);
-                propiedades.store(archivoSalida, "Configuración de la aplicación");
+                propiedades.store(archivoSalida, "Program configuration");
                 archivoSalida.close();
             }
             crearTablaUsuarios(rutaBaseDatos);
@@ -66,12 +67,12 @@ public class Model {
         Connection conexion = DriverManager.getConnection("jdbc:sqlite:" + rutaBaseDatos);
         Statement statement = conexion.createStatement();
         statement.executeUpdate("CREATE TABLE IF NOT EXISTS accounts (id INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT, title TEXT, email TEXT, password TEXT)");
-        statement.executeUpdate("CREATE TABLE IF NOT EXISTS masterkey (id INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT, key TEXT)");
-        //Arreglar para que salgan las columas de la JTable cuando se crea la base de datos
+        statement.executeUpdate("CREATE TABLE IF NOT EXISTS masterkey (id INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT, key TEXT, salt TEXT)");
         try {
             statement.close();
             conexion.close();
         }catch (SQLException e){
+            conexion.rollback();
             e.printStackTrace();
         }
     }
@@ -83,7 +84,7 @@ public class Model {
             FileInputStream archivoEntrada = new FileInputStream("config.properties");
             propiedades.load(archivoEntrada);
             archivoEntrada.close();
-            rutaBaseDatos = propiedades.getProperty("rutaBaseDatos");
+            rutaBaseDatos = propiedades.getProperty("databasePath");
             con = DriverManager.getConnection("jdbc:sqlite:" + rutaBaseDatos);
         } catch (IOException | SQLException e) {
             e.printStackTrace();
@@ -129,19 +130,41 @@ public class Model {
 
     }
 
-    public void insertKeyInDB(String keyHash) throws SQLException {
+    public void insertKeyAndSaltInDB(String keyHash) throws SQLException {
         connection = obtenerConexion();
         connection.setAutoCommit(false);
-        String sql = "insert into masterkey(id, key) values (?, ?)";
+        String sql = "INSERT INTO masterkey (id, key, salt) VALUES (?, ?, ?)";
         try{
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, 1);
-            keyHash = generateHash(keyHash);
-            preparedStatement.setString(2, keyHash);
+            String hashPass = hashWithSalt(keyHash, getSalt());
+            preparedStatement.setString(2, hashPass);
+            preparedStatement.setString(3, bytesToHexString());
             preparedStatement.execute();
             connection.commit();
             preparedStatement.close();
-
+        }catch (SQLException e){
+            e.printStackTrace();
+            connection.rollback();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        } finally {
+            cerrarConexion(obtenerConexion());
+        }
+    }
+    public void updateKeyAndSaltInDB(String key, String salt) throws SQLException {
+        connection = obtenerConexion();
+        connection.setAutoCommit(false);
+        String sql = "update masterkey set key = ?, salt = ? where id = ?";
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, key);
+            preparedStatement.setString(2, salt);
+            preparedStatement.setInt(3, 1);
+            preparedStatement.executeUpdate();
+            connection.commit();
+            resultSet.close();
+            preparedStatement.close();
         }catch (SQLException e){
             e.printStackTrace();
             connection.rollback();
@@ -165,9 +188,40 @@ public class Model {
             }catch (SQLException e){
                 e.printStackTrace();
             }finally {
-                obtenerConexion();
+                cerrarConexion(obtenerConexion());
             }
+            System.out.println("Key returned: " + key);
             return key;
+        }
+        try {
+            resultSet.close();
+            preparedStatement.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            cerrarConexion(obtenerConexion());
+        }
+        return null;
+    }
+
+    public String getSaltFromDb() throws SQLException {
+        connection = obtenerConexion();
+        String sql = "select salt from masterkey where id = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setInt(1, 1);
+        resultSet = preparedStatement.executeQuery();
+        String salt;
+        if(resultSet.next()){
+            salt = resultSet.getString("salt");
+            try {
+                resultSet.close();
+                preparedStatement.close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }finally {
+                cerrarConexion(obtenerConexion());
+            }
+            return salt;
         }
         try {
             resultSet.close();
@@ -345,7 +399,7 @@ public class Model {
             archivoEntrada = new FileInputStream("config.properties");
             propiedades.load(archivoEntrada);
             archivoEntrada.close();
-            String rutaBaseDatos = propiedades.getProperty("rutaBaseDatos");
+            String rutaBaseDatos = propiedades.getProperty("databasePath");
             return rutaBaseDatos != null && !rutaBaseDatos.isEmpty();
         } catch (IOException e) {
             e.printStackTrace();
@@ -358,35 +412,6 @@ public class Model {
                     e.printStackTrace();
                 }
             }
-        }
-    }
-
-    public void getMasterKey(String masterKey){
-        this.key = masterKey;
-        generateHash(masterKey);
-    }
-
-    public String masterKey(){
-        return this.key;
-    }
-
-    public String generateHash(String key) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] encodedHash = digest.digest(
-                    key.getBytes(StandardCharsets.UTF_8));
-            StringBuilder hexString = new StringBuilder(2 * encodedHash.length);
-            for (byte b : encodedHash) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) {
-                    hexString.append('0');
-                }
-                hexString.append(hex);
-            }
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return null;
         }
     }
 
@@ -432,5 +457,66 @@ public class Model {
                 e.printStackTrace();
             }
         }
+    }
+
+    /*Non database stuff*/
+
+    public String hashWithSalt(String password, byte[] saltM) {
+        String generatedPassword = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.update(saltM);
+            byte[] bytes = md.digest(password.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (byte aByte : bytes) {
+                sb.append(Integer.toString((aByte & 0xff) + 0x100, 16).substring(1));
+            }
+            generatedPassword = sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        salt = saltM;
+        System.out.println(bytesToHexString());
+        return generatedPassword;
+    }
+
+    public String bytesToHexString() {
+        StringBuilder hexString = new StringBuilder();
+        for (byte b : salt) {
+            hexString.append(String.format("%02x", b));
+        }
+        saltInString = hexString.toString();
+        return hexString.toString();
+    }
+
+    public byte[] hexStringToBytes(String hexString) {
+        int len = hexString.length();
+        byte[] data = new byte[len / 2];
+        for (int i = 0; i < len; i += 2) {
+            data[i / 2] = (byte) ((Character.digit(hexString.charAt(i), 16) << 4)
+                    + Character.digit(hexString.charAt(i+1), 16));
+        }
+        return data;
+    }
+
+    public byte[] getSalt() throws NoSuchAlgorithmException {
+        SecureRandom random = new SecureRandom();
+        byte[] salt = new byte[16];
+        random.nextBytes(salt);
+        this.salt = salt;
+        System.out.println(bytesToHexString());
+        return salt;
+    }
+
+    public void setMasterKey(String masterKey){
+        this.key = masterKey;
+    }
+
+    public String getMasterKey(){
+        return this.key;
+    }
+
+    public String getNewSalt(){
+        return bytesToHexString();
     }
 }

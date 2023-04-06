@@ -23,7 +23,12 @@ public class Controller {
     int selectedRowId;
     PassphraseGenerator.Cases cases;
     private boolean passphraseUpperCase, passphraseLowerCase, passphraseTitleCase, includeUpperCase, includeLowerCase, includeSymbols, includeNumbers, wasEditAccountVisible;
-    Wordlist w = Wordlist.instantiate(new File(String.format("eff_long_wordlist.txt", File.separator)));
+
+    //The line of code below belongs to the AccountManager.jar file. If you are going to create a .jar executable, please use this line of code.
+    /* Wordlist w = Wordlist.instantiate(new File(String.format("eff_long_wordlist.txt", File.separator))); */
+
+    //The line of code below belongs to the AccountManager file. Use it if you are going to make some changes in the script, that way the program won't throw any errors.
+    Wordlist w = Wordlist.instantiate(new File("src/main/resources/eff_long_wordlist.txt"));
 
     public Controller(MainPanelClass mainPanelClass, Model model){
         this.mainPanelClass = mainPanelClass;
@@ -78,7 +83,7 @@ public class Controller {
                         title = model.getTitleFromDB(id);
                         email = model.getEmailFromDB(id);
                         password = model.getPasswordFromDB(id);
-                        String pass = AES256.decrypt(password, model.masterKey());
+                        String pass = AES256.decrypt(password, model.getMasterKey());
                         mainPanelClass.getAccountsTablePanel().setVisible(false);
                         mainPanelClass.getEditAccountPanel().setVisible(true);
 
@@ -222,8 +227,8 @@ public class Controller {
                         mainPanelClass.getInsertDbPasswordPanel().setVisible(false);
                         mainPanelClass.getAccountsTablePanel().setVisible(true);
                         try {
-                            model.getMasterKey(password);
-                            model.insertKeyInDB(password);
+                            model.setMasterKey(password);
+                            model.insertKeyAndSaltInDB(password);
                             mainPanelClass.getAccountsTable().setVisible(true);
                             model.scanDatabase(mainPanelClass.getAccountsTable(), tableModel);
                             tableDefaultSettings();
@@ -246,10 +251,16 @@ public class Controller {
             public void actionPerformed(ActionEvent e) {
                 char[] password = mainPanelClass.getLoginPasswordField().getPassword();
                 String passwordStr = new String(password);
-                String hashPass = model.generateHash(passwordStr);
                 try {
-                    if(hashPass.equals(model.getKeyHashFromDB())) {
-                        model.getMasterKey(passwordStr);
+                    String salt = model.getSaltFromDb();
+                    byte[] saltByte = model.hexStringToBytes(salt);
+                    String hashPass = model.hashWithSalt(passwordStr, saltByte);
+                    String checkPassFromDB = model.getKeyHashFromDB();
+                    if(hashPass.equals(checkPassFromDB)) {
+                        String newKey = model.hashWithSalt(passwordStr, model.getSalt());
+                        String newSalt = model.getNewSalt();
+                        model.updateKeyAndSaltInDB(newKey, newSalt);
+                        model.setMasterKey(passwordStr);
                         model.scanDatabase(mainPanelClass.getAccountsTable(), tableModel);
                         tableDefaultSettings();
                         setButtonGroup();
