@@ -1,5 +1,5 @@
-package com.jova.Model;
-import com.jova.AES256;
+package com.jovaniel.Model;
+import com.jovaniel.AES256;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.io.File;

@@ -1,7 +1,7 @@
-package com.jova.Controller;
-import com.jova.AES256;
-import com.jova.View.MainPanelClass;
-import com.jova.Model.Model;
+package com.jovaniel.Controller;
+import com.jovaniel.AES256;
+import com.jovaniel.View.MainPanelClass;
+import com.jovaniel.Model.Model;
 import password.generator.data.Wordlist;
 import password.generator.generators.PassphraseGenerator;
 import password.generator.generators.PasswordGenerator;

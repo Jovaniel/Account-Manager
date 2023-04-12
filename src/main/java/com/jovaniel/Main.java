@@ -1,7 +1,7 @@
-package com.jova;
-import com.jova.Controller.Controller;
-import com.jova.Model.Model;
-import com.jova.View.MainPanelClass;
+package com.jovaniel;
+import com.jovaniel.Controller.Controller;
+import com.jovaniel.Model.Model;
+import com.jovaniel.View.MainPanelClass;
 import javax.swing.*;
 
 public class Main {
