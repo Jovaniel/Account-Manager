@@ -190,7 +190,7 @@ public class Model {
             }finally {
                 cerrarConexion(obtenerConexion());
             }
-            System.out.println("Key returned: " + key);
+//            System.out.println("Key returned: " + key);
             return key;
         }
         try {
@@ -476,7 +476,7 @@ public class Model {
             e.printStackTrace();
         }
         salt = saltM;
-        System.out.println(bytesToHexString());
+//        System.out.println(bytesToHexString());
         return generatedPassword;
     }
 
@@ -503,7 +503,7 @@ public class Model {
         byte[] salt = new byte[16];
         random.nextBytes(salt);
         this.salt = salt;
-        System.out.println(bytesToHexString());
+//        System.out.println(bytesToHexString());
         return salt;
     }
 
