@@ -383,19 +383,41 @@ public class Controller {
         mainPanelClass.randomPassGenerateButtonListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                    int length = Integer.parseInt(mainPanelClass.getRandomPasswordLengthTxtField().getText());
-                    String randomPass = setRandomPassword(length, includeUpperCase, includeLowerCase, includeSymbols, includeNumbers);
-                    mainPanelClass.getRandomPassShowGeneratedPassTxtField().setText(randomPass);
+                    if((includeUpperCase || includeLowerCase || includeNumbers || includeSymbols)) {
+                        try {
+                            if (!mainPanelClass.getRandomPasswordLengthTxtField().getText().equals("")) {
+                                int length = Integer.parseInt(mainPanelClass.getRandomPasswordLengthTxtField().getText());
+                                String randomPass = setRandomPassword(length, includeUpperCase, includeLowerCase, includeSymbols, includeNumbers);
+                                mainPanelClass.getRandomPassShowGeneratedPassTxtField().setText(randomPass);
+                            }else{
+                                JOptionPane.showMessageDialog(mainPanelClass.getMainPanel(), "Please, insert a number");
+                            }
+                        }catch (NumberFormatException exception){
+                            mainPanelClass.getRandomPasswordLengthTxtField().setText("");
+                            JOptionPane.showMessageDialog(mainPanelClass.getMainPanel(), "Please, insert numbers, not words.");
+                        }
+                    }else{
+                        JOptionPane.showMessageDialog(mainPanelClass.getMainPanel(), "Please, select one option");
+                    }
             }
         });
 
         mainPanelClass.passphraseGenerateButtonListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                    int num = Integer.parseInt(mainPanelClass.getPassphraseNumberOfWordsTxtField().getText());
-                    String separator = mainPanelClass.getPassphraseWordSeparatorTxtField().getText();
-                    String passphrase = setPassphrase(num, separator, cases);
-                    mainPanelClass.getPassphraseShowGeneratedPassTxtField().setText(passphrase);
+                if(!mainPanelClass.getPassphraseNumberOfWordsTxtField().getText().equals("")) {
+                    try {
+                        int num = Integer.parseInt(mainPanelClass.getPassphraseNumberOfWordsTxtField().getText());
+                        String separator = mainPanelClass.getPassphraseWordSeparatorTxtField().getText();
+                        String passphrase = setPassphrase(num, separator, cases);
+                        mainPanelClass.getPassphraseShowGeneratedPassTxtField().setText(passphrase);
+                    }catch (NumberFormatException ex){
+                        mainPanelClass.getPassphraseNumberOfWordsTxtField().setText("");
+                        JOptionPane.showMessageDialog(mainPanelClass.getMainPanel(), "Please, insert a number.");
+                    }
+                }else{
+                    JOptionPane.showMessageDialog(mainPanelClass.getMainPanel(), "Please, insert number of words.");
+                }
             }
         });
 
@@ -457,6 +479,9 @@ public class Controller {
                 }else{
                     mainPanelClass.getAddNewAccountPanel().setVisible(true);
                 }
+                mainPanelClass.getPassphraseWordSeparatorTxtField().setText("");
+                mainPanelClass.getPassphraseNumberOfWordsTxtField().setText("");
+                mainPanelClass.getPassphraseShowGeneratedPassTxtField().setText("");
                 mainPanelClass.getPassphrasePanel().setVisible(false);
             }
         });
@@ -469,6 +494,9 @@ public class Controller {
                 }else{
                     mainPanelClass.getAddNewAccountPanel().setVisible(true);
                 }
+                resetIncludeCheckBox();
+                mainPanelClass.getRandomPasswordLengthTxtField().setText("");
+                mainPanelClass.getRandomPassShowGeneratedPassTxtField().setText("");
                 mainPanelClass.getRandomPasswordPanel().setVisible(false);
             }
         });
@@ -483,11 +511,20 @@ public class Controller {
         return PasswordGenerator.getPassword(length, includeUpperCase, includeLowerCase, includeSymbols, includeNumbers);
     }
 
-    private void setButtonGroup(){
+    private void setButtonGroup() {
         ButtonGroup buttonGroup = new ButtonGroup();
         buttonGroup.add(mainPanelClass.getPassphraseUpperRadioButton());
         buttonGroup.add(mainPanelClass.getPassphraseLowerRadioButton());
         buttonGroup.add(mainPanelClass.getPassphraseTitleRadioButton());
+        mainPanelClass.getPassphraseUpperRadioButton().setSelected(true);
+        cases = PassphraseGenerator.Cases.UPPERCASE;
+    }
+
+    private void resetIncludeCheckBox(){
+        mainPanelClass.getIncludeUppercaseCheckbox().setSelected(false);
+        mainPanelClass.getIncludeLowercaseCheckbox().setSelected(false);
+        mainPanelClass.getIncludeNumbersCheckbox().setSelected(false);
+        mainPanelClass.getIncludeSymbolsCheckbox().setSelected(false);
     }
 
     private void tableDefaultSettings(){
